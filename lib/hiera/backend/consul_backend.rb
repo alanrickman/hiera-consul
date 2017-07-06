@@ -66,7 +66,12 @@ class Hiera
             Hiera.debug("[hiera-consul]: We only support queries to catalog and kv and you asked #{path}, skipping")
             next
           end
-          answer = wrapquery("#{path}/#{key}")
+          # Dont add forward slash when querying nodes path
+          if path.include? 'nodes'
+            answer = wrapquery("#{path}#{key}")
+          else
+            answer = wrapquery("#{path}/#{key}")
+          end
           next unless answer
           break
         end
